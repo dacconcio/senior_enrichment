@@ -76,7 +76,6 @@ class CreateUpdateStudent extends Component {
   }
 
   componentDidUpdate(prevProps) {
-
     if (
       this.props.match.params.studentId &&
       prevProps.student !== this.props.student &&
@@ -121,7 +120,7 @@ class CreateUpdateStudent extends Component {
     }
   }
 
-     render() {
+  render() {
     const { firstName, lastName, gpa } = this.state;
     const { onChange, onSubmit } = this;
 
@@ -134,50 +133,37 @@ class CreateUpdateStudent extends Component {
 
     return (
       <div>
-        <form className='form-group' onSubmit={onSubmit}
-        >
-          <div 
-            style={{fontSize:30}}>
-            First Name:
-          </div>
+        <form className="form-group" onSubmit={onSubmit}>
+          <div style={{ fontSize: 30 }}>First Name:</div>
           <input
-            className='form-control'
+            className="form-control"
             type="text"
             name="firstName"
             onChange={onChange}
             value={firstName}
           />{' '}
           <br />
-
- <div 
-            style={{fontSize:30}}>
-            Last Name:
-          </div>
-
+          <div style={{ fontSize: 30 }}>Last Name:</div>
           <input
-className='form-control'
-
+            className="form-control"
             type=""
             name="lastName"
             onChange={onChange}
             value={lastName}
           />{' '}
           <br />
-      <div 
-            style={{fontSize:30}}>
-            GPA:
-          </div>
-   
-      <input className='form-control'
-type="" name="gpa" onChange={onChange} value={gpa} />{' '}
+          <div style={{ fontSize: 30 }}>GPA:</div>
+          <input
+            className="form-control"
+            type=""
+            name="gpa"
+            onChange={onChange}
+            value={gpa}
+          />{' '}
           <br />
-
-      <div 
-            style={{fontSize:30}}>
-           School: 
-          </div>
+          <div style={{ fontSize: 30 }}>School:</div>
           {school ? (
-            <div style={{fontSize:30}}> {school.name} </div>
+            <div style={{ fontSize: 30 }}> {school.name} </div>
           ) : (
             <div>
               <select name="schoolId" onChange={onChange}>
@@ -195,7 +181,7 @@ type="" name="gpa" onChange={onChange} value={gpa} />{' '}
             </div>
           )}
           <br />
-          <input className='btn btn-primary' type="submit" value="SUBMIT" />
+          <input className="btn btn-primary" type="submit" value="SUBMIT" />
         </form>
       </div>
     );
