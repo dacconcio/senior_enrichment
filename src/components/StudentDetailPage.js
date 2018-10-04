@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { studentIdToSchool } from './MapStudentsToSchools.js';
 import { connect } from 'react-redux';
-import { getDataFromServer } from '../store.js';
-import { deleteStudent } from '../store.js';
+import { getDataFromServer, deleteStudent } from '../store.js';
 
 const mapStateToProps = (state, props) => {
   const student = state.students.find(student => {

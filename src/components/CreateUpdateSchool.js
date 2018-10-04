@@ -50,29 +50,31 @@ class CreateUpdateSchool extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    const { name, address, description } = this.props.school;
+
     if (
       prevProps.school !== this.props.school &&
       this.props.school.name &&
       this.state.loaded === false
     ) {
       this.setState({
-        name: this.props.school.name,
-        address: this.props.school.address,
-        description: this.props.school.description
+        name,
+        address,
+        description
       });
-
       this.setState({ loaded: true });
     }
   }
 
   componentDidMount() {
+    const { name, address, description } = this.props.school;
+
     if (this.props.school && this.state.loaded === false) {
       this.setState({
-        name: this.props.school.name,
-        address: this.props.school.address,
-        description: this.props.school.description
+        name,
+        address,
+        description
       });
-
       this.setState({ loaded: true });
     }
   }
@@ -105,7 +107,6 @@ class CreateUpdateSchool extends Component {
         description: this.state.description
       });
     }
-
     this.props.history.push('/schools');
   }
 
@@ -142,7 +143,6 @@ class CreateUpdateSchool extends Component {
           <br />
           <input className="btn btn-primary" type="submit" value="SUBMIT" />
         </form>
-
         {this.props.match.params.id ? (
           <div>
             <input
@@ -151,8 +151,8 @@ class CreateUpdateSchool extends Component {
               type="submit"
               value="DELETE SCHOOL"
             />
-      <br />
-      <br />
+            <br />
+            <br />
             <button className="btn btn-success">
               <Link
                 style={{ color: 'white' }}
@@ -162,7 +162,6 @@ class CreateUpdateSchool extends Component {
                 ADD A STUDENT TO THIS SCHOOL
               </Link>
             </button>
-
             <br />
             <br />
             <div style={{ fontSize: 30 }}> Students: </div>
@@ -188,8 +187,7 @@ class CreateUpdateSchool extends Component {
                 );
               }
             })}
-            <div>
-            </div>
+            <div />
           </div>
         ) : null}
       </div>
