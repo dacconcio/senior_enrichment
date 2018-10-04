@@ -21,15 +21,17 @@ class SchoolPage extends Component {
   }
 
   render() {
+    const { students, schools, deleteStudent, location } = this.props;
+
     return (
       <div>
         {this.props.schools ? (
           <Route>
             <ListSchools
-              students={this.props.students}
-              schools={this.props.schools}
-              deleteStudent={this.props.deleteStudent}
-              location={this.props.location}
+              students={students}
+              schools={schools}
+              deleteStudent={deleteStudent}
+              location={location}
             />
           </Route>
         ) : null}

@@ -3,9 +3,7 @@ import React, { Component } from 'react';
 import { deleteStudent } from '../store.js';
 import ListStudents from './ListStudents.js';
 
-
 const mapStateToProps = state => {
-
   return {
     students: state.students,
     schools: state.schools
@@ -24,13 +22,15 @@ class StudentsPage extends Component {
   }
 
   render() {
+    const { students, schools, deleteStudent } = this.props;
+
     return (
       <div>
         {this.props.students ? (
           <ListStudents
-            students={this.props.students}
-            schools={this.props.schools}
-            deleteStudent={this.props.deleteStudent}
+            students={students}
+            schools={schools}
+            deleteStudent={deleteStudent}
           />
         ) : null}
       </div>

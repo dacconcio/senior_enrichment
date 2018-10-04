@@ -57,16 +57,20 @@ class StudentDetailPage extends Component {
   }
 
   render() {
+    const { firstName, lastName, gpa } = this.props.student;
 
     return (
       <div>
-        {this.state.loaded && this.props.student? (
+        {this.state.loaded && this.props.student ? (
           <ul>
-            <li> First Name: {this.props.student.firstName} </li>
-            <li> Last Name {this.props.student.lastName} </li>
-            <li> GPA: {this.props.student.gpa} </li>
+            <li> First Name: {firstName} </li>
+            <li> Last Name {lastName} </li>
+            <li> GPA: {gpa} </li>
             <li> School Name: {this.props.school.name} </li>
-            <button className='btn btn-danger' onClick={() => this.props.deleteStudent(this.props.student.id)}>
+            <button
+              className="btn btn-danger"
+              onClick={() => this.props.deleteStudent(this.props.student.id)}
+            >
               {' '}
               DELETE{' '}
             </button>
