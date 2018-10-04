@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { createStudent, updateStudent } from '../store.js';
 import { connect } from 'react-redux';
-import { studentIdToSchool } from './MapStudentsToSchools.js';
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -13,12 +12,11 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = (state, props) => {
   let student = {};
 
-  if (props.match.params.id) {
+  if (props.match.params.studentId) {
     student = state.students.find(student => {
-      return student.id === props.match.params.id * 1;
+      return student.id === props.match.params.studentId * 1;
     });
   }
-
   return {
     schools: state.schools,
     student
@@ -48,67 +46,61 @@ class CreateUpdateStudent extends Component {
   onSubmit(event) {
     event.preventDefault();
 
+    const { firstName, lastName, gpa, schoolId } = this.state;
+    let submitUpdate = false;
 
-    let finalSchoolId = null;
-    if (this.state.schoolId !== '') {
-      finalSchoolId = this.state.schoolId;
+    if (this.props.match.params.id) {
+      submitUpdate = true;
     }
 
-    if (this.props.match.params.id){
-
-
-      console.log('update')
-
-
+    if (submitUpdate) {
       this.props.updateStudent(
         {
-          firstName: this.state.firstName,
-          lastName: this.state.lastName,
-          gpa: this.state.gpa,
-          schoolId: finalSchoolId
+          firstName,
+          lastName,
+          gpa,
+          schoolId: schoolId === '' ? null : schoolId
         },
         this.props.student.id
       );
     } else {
-      console.log(this.state)
-
       this.props.createStudent({
-        firstName: this.state.firstName,
-        lastName: this.state.lastName,
-        gpa: this.state.gpa,
-        schoolId: finalSchoolId
+        firstName,
+        lastName,
+        gpa,
+        schoolId: schoolId === '' ? null : schoolId
+      });
+    }
+
+    this.props.history.push('/students');
+  }
+
+  componentDidUpdate(prevProps) {
+
+    if (
+      this.props.match.params.studentId &&
+      prevProps.student !== this.props.student &&
+      this.state.loaded === false
+    ) {
+      this.setState({
+        firstName: this.props.student.firstName,
+        lastName: this.props.student.lastName,
+        gpa: this.props.student.gpa
+      });
+
+      this.setState({ loaded: true });
+    }
+
+    if (this.state.loadedSchool === false && this.props.match.params.schoolId) {
+      this.setState({
+        schoolId: this.props.match.params.schoolId,
+        loadedSchool: true
       });
     }
   }
-
   componentDidMount() {
     if (
-      this.props.match.params.id &&
-      this.props.student &&
-      this.state.loaded === false
-    ) {
-      this.setState({
-        firstName: this.props.student.firstName,
-        lastName: this.props.student.lastName,
-        gpa: this.props.student.gpa
-      });
-
-      this.setState({ loaded: true });
-    }
-  
-
-
-  if(this.state.loadedSchool === false && this.props.match.params.schoolId){
-    this.setState({
-      schoolId: this.props.match.params.schoolId, 
-      loadedSchool: true
-    })
-  }
-  }
-
-  componentDidUpdate() {
-    if (
-      this.props.match.params.id &&
+      this.props.match.params.studentId &&
       this.props.student &&
       this.state.loaded === false
     ) {
@@ -121,21 +113,20 @@ class CreateUpdateStudent extends Component {
       this.setState({ loaded: true });
     }
 
-
-  if(this.state.loadedSchool === false && this.props.match.params.schoolId){
-    this.setState({
-      schoolId: this.props.match.params.schoolId, 
-      loadedSchool: true
-    })
+    if (this.state.loadedSchool === false && this.props.match.params.schoolId) {
+      this.setState({
+        schoolId: this.props.match.params.schoolId,
+        loadedSchool: true
+      });
+    }
   }
-  }
 
- 
+     render() {
+    const { firstName, lastName, gpa } = this.state;
+    const { onChange, onSubmit } = this;
 
-  render() {
     let school = null;
-
-    if (this.props.match.params.schoolId) {
+    if (this.state.schoolId) {
       school = this.props.schools.find(
         school => school.id === this.props.match.params.schoolId * 1
       );
@@ -143,37 +134,53 @@ class CreateUpdateStudent extends Component {
 
     return (
       <div>
-        <form onSubmit={this.onSubmit}>
-          First Name:{' '}
+        <form className='form-group' onSubmit={onSubmit}
+        >
+          <div 
+            style={{fontSize:30}}>
+            First Name:
+          </div>
           <input
+            className='form-control'
             type="text"
             name="firstName"
-            onChange={this.onChange}
-            value={this.state.firstName}
+            onChange={onChange}
+            value={firstName}
           />{' '}
           <br />
-          Last Name:{' '}
+
+ <div 
+            style={{fontSize:30}}>
+            Last Name:
+          </div>
+
           <input
+className='form-control'
+
             type=""
             name="lastName"
-            onChange={this.onChange}
-            value={this.state.lastName}
+            onChange={onChange}
+            value={lastName}
           />{' '}
           <br />
-          GPA:{' '}
-          <input
-            type=""
-            name="gpa"
-            onChange={this.onChange}
-            value={this.state.gpa}
-          />{' '}
+      <div 
+            style={{fontSize:30}}>
+            GPA:
+          </div>
+   
+      <input className='form-control'
+type="" name="gpa" onChange={onChange} value={gpa} />{' '}
           <br />
-          School:{' '}
+
+      <div 
+            style={{fontSize:30}}>
+           School: 
+          </div>
           {school ? (
-            school.name
+            <div style={{fontSize:30}}> {school.name} </div>
           ) : (
             <div>
-              <select name="schoolId" onChange={this.onChange}>
+              <select name="schoolId" onChange={onChange}>
                 <option value="" name="school">
                   {' '}
                 </option>
@@ -188,7 +195,7 @@ class CreateUpdateStudent extends Component {
             </div>
           )}
           <br />
-          <input type="submit" value="Submit" />
+          <input className='btn btn-primary' type="submit" value="SUBMIT" />
         </form>
       </div>
     );

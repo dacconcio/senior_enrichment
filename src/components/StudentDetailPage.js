@@ -66,10 +66,10 @@ class StudentDetailPage extends Component {
             <li> Last Name {this.props.student.lastName} </li>
             <li> GPA: {this.props.student.gpa} </li>
             <li> School Name: {this.props.school.name} </li>
-            <li onClick={() => this.props.deleteStudent(this.props.student.id)}>
+            <button className='btn btn-danger' onClick={() => this.props.deleteStudent(this.props.student.id)}>
               {' '}
               DELETE{' '}
-            </li>
+            </button>
           </ul>
         ) : null}
       </div>

@@ -2,16 +2,13 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { deleteStudent } from '../store.js';
 import ListStudents from './ListStudents.js';
-import { studentIdToSchool } from './MapStudentsToSchools.js';
-
 
 
 const mapStateToProps = state => {
 
   return {
     students: state.students,
-    schools: state.schools,
-    studentIdToSchool: studentIdToSchool(state)
+    schools: state.schools
   };
 };
 
@@ -27,15 +24,12 @@ class StudentsPage extends Component {
   }
 
   render() {
-
-
     return (
       <div>
         {this.props.students ? (
           <ListStudents
             students={this.props.students}
             schools={this.props.schools}
-            studentIdToSchool={this.props.studentIdToSchool}
             deleteStudent={this.props.deleteStudent}
           />
         ) : null}

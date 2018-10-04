@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom'
-
+import { Link } from 'react-router-dom';
 
 const mountStateToProps = state => {
   return {
@@ -10,19 +9,25 @@ const mountStateToProps = state => {
   };
 };
 
-class Nav extends Component {
-  constructor(props) {
-    super(props);
-  }
+function Nav(props) {
+  return (
+    <ul style={{ fontSize: 30 }} className="nav nav-pills nav-justified">
+      <li className="nav-item">
+        <Link to="/schools">Schools: {props.numberOfSchools} </Link>
+      </li>
+      <li className="nav-item">
+        <Link to="/students"> Students: {props.numberOfStudents}</Link>
+      </li>
+      <li className="nav-item">
+        <Link to="/createstudent"> Create Student</Link>
+      </li>
+      <li className="nav-item">
+        <Link to="/createschool"> Create School</Link>
+      </li>
 
-  render() {
-    return (
-      <div>
-        <Link to='/schools' >Schools: {this.props.numberOfSchools} </Link>
-        <Link to='/students' > Students: {this.props.numberOfStudents}</Link>
       <p />
-      </div>
-    );
-  }
+    </ul>
+  );
 }
+
 export default connect(mountStateToProps)(Nav);

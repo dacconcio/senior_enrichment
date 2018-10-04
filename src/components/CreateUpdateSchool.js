@@ -25,9 +25,11 @@ const mapStateToProps = (state, props) => {
       return school.id === props.match.params.id * 1;
     });
   }
+
   return {
     students: state.students,
-    school
+    school,
+    location: props.location
   };
 };
 
@@ -44,14 +46,27 @@ class CreateUpdateSchool extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.deleteSchool = this.deleteSchool.bind(this);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.school !== this.props.school &&
+      this.props.school.name &&
+      this.state.loaded === false
+    ) {
+      this.setState({
+        name: this.props.school.name,
+        address: this.props.school.address,
+        description: this.props.school.description
+      });
+
+      this.setState({ loaded: true });
+    }
   }
 
   componentDidMount() {
-    if (
-      this.props.match.params.id &&
-      this.props.school &&
-      this.state.loaded === false
-    ) {
+    if (this.props.school && this.state.loaded === false) {
       this.setState({
         name: this.props.school.name,
         address: this.props.school.address,
@@ -62,20 +77,9 @@ class CreateUpdateSchool extends Component {
     }
   }
 
-  componentDidUpdate() {
-    if (
-      this.props.match.params.id &&
-      this.props.school &&
-      this.state.loaded === false
-    ) {
-      this.setState({
-        name: this.props.school.name,
-        address: this.props.school.address,
-        description: this.props.school.description
-      });
-
-      this.setState({ loaded: true });
-    }
+  deleteSchool(id) {
+    this.props.deleteSchool(id);
+    this.props.history.push('/schools');
   }
 
   onChange(event) {
@@ -101,60 +105,76 @@ class CreateUpdateSchool extends Component {
         description: this.state.description
       });
     }
+
+    this.props.history.push('/schools');
   }
 
   render() {
     return (
       <div>
-        <form onSubmit={this.onSubmit}>
-          Name:{' '}
+        <form className="form-group" onSubmit={this.onSubmit}>
+          <div style={{ fontSize: 30 }}> Name: </div>
           <input
+            className="form-control"
             type="text"
             name="name"
             onChange={this.onChange}
             value={this.state.name}
           />{' '}
           <br />
-          Address:{' '}
+          <div style={{ fontSize: 30 }}> Address: </div>
           <input
+            className="form-control"
             type=""
             name="address"
             onChange={this.onChange}
             value={this.state.address}
           />{' '}
           <br />
-          Description:{' '}
+          <div style={{ fontSize: 30 }}> Description: </div>
           <input
+            className="form-control"
             type=""
             name="description"
             onChange={this.onChange}
             value={this.state.description}
           />{' '}
           <br />
-          <input type="submit" value="Submit" />
+          <input className="btn btn-primary" type="submit" value="SUBMIT" />
         </form>
 
         {this.props.match.params.id ? (
           <div>
             <input
-              onClick={() =>
-                this.props.deleteSchool(this.props.match.params.id)
-              }
+              className="btn btn-danger"
+              onClick={() => this.deleteSchool(this.props.match.params.id)}
               type="submit"
               value="DELETE SCHOOL"
             />
+      <br />
+      <br />
+            <button className="btn btn-success">
+              <Link
+                style={{ color: 'white' }}
+                to={`/createstudent/${this.props.match.params.id}`}
+              >
+                {' '}
+                ADD A STUDENT TO THIS SCHOOL
+              </Link>
+            </button>
+
             <br />
             <br />
-            Students:{' '}
+            <div style={{ fontSize: 30 }}> Students: </div>
             {this.props.students.map(student => {
               if (student.schoolId === this.props.match.params.id * 1) {
                 return (
-                  <div key={student.id}>
-                    {' '}
-                    {student.firstName}
+                  <div key={student.id} style={{ fontSize: 20 }}>
+                    <br /> {student.firstName + '   '}
                     <input
+                      className="btn btn-warning"
                       type="submit"
-                      value="REMOVE SCHOOL"
+                      value="REMOVE STUDENT FROM THE SCHOOL"
                       onClick={() =>
                         this.props.updateStudent(
                           {
@@ -169,11 +189,6 @@ class CreateUpdateSchool extends Component {
               }
             })}
             <div>
-              <br />
-              <Link to={`/createstudent/${this.props.match.params.id}`}>
-                {' '}
-                Add a Student to this School
-              </Link>
             </div>
           </div>
         ) : null}

@@ -3,12 +3,13 @@ import thunk from 'redux-thunk';
 import axios from 'axios';
 
 const CREATE_STUDENTS = 'CREATE_STUDENTS';
-const CREATE_ONE_STUDENT = 'CREATE_ONE_STUDENT'
+const CREATE_ONE_STUDENT = 'CREATE_ONE_STUDENT';
 const DELETE_STUDENT = 'DELETE_STUDENT';
+const UPDATE_STUDENT = 'UPDATE_STUDENT';
+
 const DELETE_SCHOOL = 'DELETE_SCHOOL';
 const CREATE_SCHOOLS = 'CREATE_SCHOOL';
 const CREATE_ONE_SCHOOL = 'CREATE_ONE_SCHOOL';
-const UPDATE_STUDENT = 'UPDATE_STUDENT';
 const UPDATE_SCHOOL = 'UPDATE_SCHOOL';
 
 const deleteSchoolOnState = id => {
@@ -72,7 +73,8 @@ export const createSchool = school => {
   return dispatch => {
     axios
       .post('/api/schools/', school)
-      .then(response => dispatch(createSchoolOnState(response.data)))
+      .then(response =>dispatch(createSchoolOnState(response.data))
+      )
       .catch(err => console.log(err));
   };
 };
@@ -93,7 +95,7 @@ export const createStudent = student => {
   };
 };
 
-export const deleteStudentAction = id => {
+export const deleteStudentFromState = id => {
   return {
     type: DELETE_STUDENT,
     id
@@ -105,7 +107,7 @@ export const deleteStudent = id => {
     return axios
       .delete(`/api/students/${id}`)
       .then(response => {
-        dispatch(deleteStudentAction(response.data));
+        dispatch(deleteStudentFromState(response.data));
       })
       .catch(err => console.log(err));
   };
@@ -153,12 +155,10 @@ const reducer = (state = initialState, action) => {
         school => school.id !== action.id
       );
 
-
-
       return Object.assign({}, state, { schools: newSchoolsDelete });
 
     case UPDATE_SCHOOL:
-      let updatedSchools = state.schools.map(school => {
+      let newSchoolsUpdate = state.schools.map(school => {
         if (school.id === action.school.id) {
           return action.school;
         } else {
@@ -166,10 +166,10 @@ const reducer = (state = initialState, action) => {
         }
       });
 
-      return Object.assign({}, state, { schools: updatedSchools });
+      return Object.assign({}, state, { schools: newSchoolsUpdate });
 
     case UPDATE_STUDENT:
-      let updatedStudents = state.students.map(student => {
+      let newStudentsUpdate = state.students.map(student => {
         if (student.id === action.student.id) {
           return action.student;
         } else {
@@ -177,27 +177,25 @@ const reducer = (state = initialState, action) => {
         }
       });
 
-      return Object.assign({}, state, { students: updatedStudents });
+      return Object.assign({}, state, { students: newStudentsUpdate });
 
     case CREATE_ONE_SCHOOL:
-      let allSchools = state.schools;
-      allSchools.push(action.school);
-
-      return Object.assign({}, state, { schools: allSchools });
+      let newSchoolsCreateOne = [...state.schools]
+      newSchoolsCreateOne.push(action.school);
+      return Object.assign({}, state, { schools: newSchoolsCreateOne });
 
     case CREATE_ONE_STUDENT:
-      let studentsWithCreatedStudent = state.students;
-      studentsWithCreatedStudent.push(action.student);
+      let newStudentsCreateOne = [...state.students]
+      newStudentsCreateOne.push(action.student);
 
-
-      return Object.assign({}, state, { students: studentsWithCreatedStudent });
+      return Object.assign({}, state, { students: newStudentsCreateOne });
 
     case DELETE_STUDENT:
-      let newStudents = state.students.filter(
+      let newStudentsDelete = state.students.filter(
         student => student.id !== action.id
       );
 
-      return Object.assign({}, state, { students: newStudents });
+      return Object.assign({}, state, { students: newStudentsDelete });
 
     case CREATE_STUDENTS:
       return Object.assign({}, state, { students: action.students });

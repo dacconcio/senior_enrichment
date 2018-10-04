@@ -1,37 +1,37 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import { studentIdToSchool } from './MapStudentsToSchools.js';
-import ListSchools from './ListSchools.js'
+import ListSchools from './ListSchools.js';
+import { Route } from 'react-router-dom';
 
 const mapStateToProps = state => {
   return {
     students: state.students,
-    schools: state.schools,
-    studentIdToSchool: studentIdToSchool(state)
+    schools: state.schools
   };
 };
-
-/*const mapDispatchToProps = dispatch => {*/
-//return {
-//deleteSchool: id => dispatch(deleteStudent(id))
-//};
-/*};*/
-
 class SchoolPage extends Component {
   constructor(props) {
     super(props);
+  }
+
+  onComponentChange(prevProps) {
+    if (prevProps.location !== this.props.location) {
+      this.forceUpdate();
+    }
   }
 
   render() {
     return (
       <div>
         {this.props.schools ? (
-          <ListSchools
-            students={this.props.students}
-            schools={this.props.schools}
-            studentIdToSchool={this.props.studentIdToSchool}
-            deleteStudent={this.props.deleteStudent}
-          />
+          <Route>
+            <ListSchools
+              students={this.props.students}
+              schools={this.props.schools}
+              deleteStudent={this.props.deleteStudent}
+              location={this.props.location}
+            />
+          </Route>
         ) : null}
       </div>
     );
