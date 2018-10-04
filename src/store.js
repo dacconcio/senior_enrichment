@@ -73,8 +73,7 @@ export const createSchool = school => {
   return dispatch => {
     axios
       .post('/api/schools/', school)
-      .then(response =>dispatch(createSchoolOnState(response.data))
-      )
+      .then(response => dispatch(createSchoolOnState(response.data)))
       .catch(err => console.log(err));
   };
 };
@@ -180,12 +179,12 @@ const reducer = (state = initialState, action) => {
       return Object.assign({}, state, { students: newStudentsUpdate });
 
     case CREATE_ONE_SCHOOL:
-      let newSchoolsCreateOne = [...state.schools]
+      let newSchoolsCreateOne = [...state.schools];
       newSchoolsCreateOne.push(action.school);
       return Object.assign({}, state, { schools: newSchoolsCreateOne });
 
     case CREATE_ONE_STUDENT:
-      let newStudentsCreateOne = [...state.students]
+      let newStudentsCreateOne = [...state.students];
       newStudentsCreateOne.push(action.student);
 
       return Object.assign({}, state, { students: newStudentsCreateOne });

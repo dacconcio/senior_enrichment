@@ -9,8 +9,6 @@ import CreateUpdateStudent from './components/CreateUpdateStudent.js';
 import SchoolsPage from './components/SchoolsPage.js';
 import CreateUpdateSchool from './components/CreateUpdateSchool.js';
 
-
-
 const mapDispatchToProps = dispatch => {
   return {
     getData: () => dispatch(getDataFromServer())
@@ -28,9 +26,6 @@ class App extends Component {
 
   render() {
     return (
-
-
-
       <div>
         <HashRouter>
           <div>
