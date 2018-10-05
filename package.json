@@ -31,6 +31,7 @@
   },
   "devDependencies": {},
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "webpack": "./node_modules/webpack/bin/webpack.js",
     "start:dev": "npm run webpack -- --watch --mode=development & DATABASE_URL=postgres://localhost/senior-enrich nodemon server.js --ignore src/ --ignore dist"
@@ -38,4 +39,5 @@
   "keywords": [],
   "author": "",
   "license": "ISC"
+
 }
