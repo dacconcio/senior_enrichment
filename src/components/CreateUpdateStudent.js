@@ -49,7 +49,7 @@ class CreateUpdateStudent extends Component {
     const { firstName, lastName, gpa, schoolId } = this.state;
     let submitUpdate = false;
 
-    if (this.props.match.params.id) {
+    if (this.props.match.params.studentId) {
       submitUpdate = true;
     }
 

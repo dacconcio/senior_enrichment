@@ -42,7 +42,7 @@ class App extends Component {
 
             <Switch>
               <Route exact path="/schools" component={SchoolsPage} />
-              <Route exact path="/schools/:id" component={CreateUpdateSchool} />
+              <Route exact path="/schools/:schoolId" component={CreateUpdateSchool} />
             </Switch>
 
             <Switch>

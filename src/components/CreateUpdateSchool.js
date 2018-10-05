@@ -20,9 +20,9 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = (state, props) => {
   let school = {};
 
-  if (props.match.params.id) {
+  if (props.match.params.schoolId) {
     school = state.schools.find(school => {
-      return school.id === props.match.params.id * 1;
+      return school.id === props.match.params.schoolId * 1;
     });
   }
 
@@ -50,30 +50,26 @@ class CreateUpdateSchool extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { name, address, description } = this.props.school;
-
     if (
       prevProps.school !== this.props.school &&
       this.props.school.name &&
       this.state.loaded === false
     ) {
       this.setState({
-        name,
-        address,
-        description
+        name: this.props.school.name,
+        address: this.props.school.address,
+        description: this.props.school.description
       });
       this.setState({ loaded: true });
     }
   }
 
   componentDidMount() {
-    const { name, address, description } = this.props.school;
-
-    if (this.props.school && this.state.loaded === false) {
+    if (this.props.school.name && this.state.loaded === false) {
       this.setState({
-        name,
-        address,
-        description
+        name: this.props.school.name,
+        address: this.props.school.address,
+        description: this.props.school.description
       });
       this.setState({ loaded: true });
     }
@@ -91,14 +87,14 @@ class CreateUpdateSchool extends Component {
   onSubmit(event) {
     event.preventDefault();
 
-    if (this.props.match.params.id) {
+    if (this.props.match.params.schoolId) {
       this.props.updateSchool(
         {
           name: this.state.name,
           adddress: this.state.address,
           description: this.state.description
         },
-        this.props.match.params.id
+        this.props.match.params.schoolId
       );
     } else {
       this.props.createSchool({
@@ -143,11 +139,13 @@ class CreateUpdateSchool extends Component {
           <br />
           <input className="btn btn-primary" type="submit" value="SUBMIT" />
         </form>
-        {this.props.match.params.id ? (
+        {this.props.match.params.schoolId ? (
           <div>
             <input
               className="btn btn-danger"
-              onClick={() => this.deleteSchool(this.props.match.params.id)}
+              onClick={() =>
+                this.deleteSchool(this.props.match.params.schoolId)
+              }
               type="submit"
               value="DELETE SCHOOL"
             />
@@ -156,7 +154,7 @@ class CreateUpdateSchool extends Component {
             <button className="btn btn-success">
               <Link
                 style={{ color: 'white' }}
-                to={`/createstudent/${this.props.match.params.id}`}
+                to={`/createstudent/${this.props.match.params.schoolId}`}
               >
                 {' '}
                 ADD A STUDENT TO THIS SCHOOL
@@ -166,7 +164,7 @@ class CreateUpdateSchool extends Component {
             <br />
             <div style={{ fontSize: 30 }}> Students: </div>
             {this.props.students.map(student => {
-              if (student.schoolId === this.props.match.params.id * 1) {
+              if (student.schoolId === this.props.match.params.schoolId * 1) {
                 return (
                   <div key={student.id} style={{ fontSize: 20 }}>
                     <br /> {student.firstName + '   '}
